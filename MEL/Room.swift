@@ -13,4 +13,6 @@ class Room {
     var name: String?
     var address: String?
     var rating: Double?
+    var added = false
+    var isAdding = false
 }

@@ -49,14 +49,6 @@ class HomeViewController: BaseViewController, UITableViewDataSource, UITableView
     
     @IBAction func add() {
         performSegue(withIdentifier: "SegueToSearchRoom", sender: nil)
-//        let room = Room()
-//        room.id = UUID().uuidString
-//        room.name = "Last Job"
-//        room.address = "Amsterdam"
-//        room.rating = 5.0
-//
-//        API.shared.addNewRoom(room)
-//        API.shared.addRoomToUserRoomsList(room)
     }
     
     // MARK: - UITableViewDataSource

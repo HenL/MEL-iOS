@@ -23,7 +23,7 @@ class API {
     
     func searchRoom(_ text: String, success: @escaping ([Room])->(), failure: @escaping ()->()) {
         
-        dbRef.child("rooms").queryOrdered(byChild: "name").queryStarting(atValue: text).queryEnding(atValue: text+"\u{f8ff}").queryLimited(toLast: 20).observeSingleEvent(of: .value) { snapshot in
+        dbRef.child("rooms").queryOrdered(byChild: "name").queryStarting(atValue: text).queryEnding(atValue: text+"\u{f8ff}").observeSingleEvent(of: .value) { snapshot in
         
             if snapshot.exists() {
                 var rooms = [Room]()
@@ -60,10 +60,22 @@ class API {
         }
     }
 
-    func checkIfRoomAlreadyExists(roomName: String, completion: @escaping (Bool) -> ()) {
+    func checkIfRoomAlreadyExists(roomName: String, roomAddress: String, completion: @escaping (Bool) -> ()) {
         dbRef.child("rooms").queryOrdered(byChild: "name").queryEqual(toValue: roomName).observeSingleEvent(of: .value) { snapshot in
             
-            completion(snapshot.exists())
+            if !snapshot.exists() {
+                completion(false)
+            } else {
+                for r in snapshot.children.allObjects as! [DataSnapshot] {
+                    if let item = r.value as? [String: Any], let address = item["address"] as? String, address == roomAddress {
+                        completion(true)
+                        return
+                    }
+                }
+                completion(false)
+            }
+            
+            
         }
     }
     

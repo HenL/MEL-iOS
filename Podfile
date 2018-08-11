@@ -10,5 +10,6 @@ target 'MEL' do
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
   pod 'GoogleSignIn'
+  pod 'Cosmos'
   
 end

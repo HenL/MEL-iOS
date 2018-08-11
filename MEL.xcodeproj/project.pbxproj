@@ -13,6 +13,8 @@
 		5A461400211AE7CD00D9915B /* SearchRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4613FF211AE7CD00D9915B /* SearchRoomViewController.swift */; };
 		5A461402211AE96100D9915B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A461401211AE96100D9915B /* Room.swift */; };
 		5A461404211AEA8100D9915B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A461403211AEA8100D9915B /* API.swift */; };
+		5A5CA12B211E7AAB001A738A /* AddNewRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5CA12A211E7AAB001A738A /* AddNewRoomViewController.swift */; };
+		5A5CA12D211EA392001A738A /* RoomDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5CA12C211EA392001A738A /* RoomDetailsViewController.swift */; };
 		5A7BDDD8211469010096CF99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A7BDDD7211468C10096CF99 /* GoogleService-Info.plist */; };
 		5AC8BA832110F69D00CBE847 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC8BA822110F69D00CBE847 /* AppDelegate.swift */; };
 		5AC8BA852110F69D00CBE847 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC8BA842110F69D00CBE847 /* LoginViewController.swift */; };
@@ -30,6 +32,8 @@
 		5A4613FF211AE7CD00D9915B /* SearchRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRoomViewController.swift; sourceTree = "<group>"; };
 		5A461401211AE96100D9915B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		5A461403211AEA8100D9915B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		5A5CA12A211E7AAB001A738A /* AddNewRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewRoomViewController.swift; sourceTree = "<group>"; };
+		5A5CA12C211EA392001A738A /* RoomDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailsViewController.swift; sourceTree = "<group>"; };
 		5A7BDDD7211468C10096CF99 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5AC8BA7F2110F69D00CBE847 /* MEL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MEL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AC8BA822110F69D00CBE847 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 				5AC8BA842110F69D00CBE847 /* LoginViewController.swift */,
 				5A2F87DB2119CDD100179ED9 /* HomeViewController.swift */,
 				5A4613FF211AE7CD00D9915B /* SearchRoomViewController.swift */,
+				5A5CA12A211E7AAB001A738A /* AddNewRoomViewController.swift */,
+				5A5CA12C211EA392001A738A /* RoomDetailsViewController.swift */,
 				5A461401211AE96100D9915B /* Room.swift */,
 				5AC8BA862110F69D00CBE847 /* Main.storyboard */,
 				5AC8BA892110F69D00CBE847 /* Assets.xcassets */,
@@ -224,6 +230,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MEL/Pods-MEL-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Cosmos/Cosmos.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -232,6 +239,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cosmos.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -252,12 +260,14 @@
 			files = (
 				5A4613FE211AE24500D9915B /* BaseViewController.swift in Sources */,
 				5AC8BA852110F69D00CBE847 /* LoginViewController.swift in Sources */,
+				5A5CA12D211EA392001A738A /* RoomDetailsViewController.swift in Sources */,
 				5A461402211AE96100D9915B /* Room.swift in Sources */,
 				5AC8BA832110F69D00CBE847 /* AppDelegate.swift in Sources */,
 				5A2F87DC2119CDD100179ED9 /* HomeViewController.swift in Sources */,
 				5A2F87DE2119D00000179ED9 /* SplashViewController.swift in Sources */,
 				5A461404211AEA8100D9915B /* API.swift in Sources */,
 				5A461400211AE7CD00D9915B /* SearchRoomViewController.swift in Sources */,
+				5A5CA12B211E7AAB001A738A /* AddNewRoomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

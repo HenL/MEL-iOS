@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cosmos
 
 class SearchRoomViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     @IBOutlet weak var searchBar: UISearchBar!
@@ -65,7 +66,9 @@ class SearchRoomViewController: BaseViewController, UITableViewDataSource, UITab
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         results.removeAll()
         resultsTableView.reloadData()
-        search(text: searchText)
+        if !searchText.isEmpty {
+            search(text: searchText)
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -81,25 +84,48 @@ class SearchRoomViewController: BaseViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell", for: indexPath) as! SearchResultCell
         let room = results[indexPath.row]
-        cell.textLabel?.text = room.name
-        cell.detailTextLabel?.text = room.address
+        cell.nameLabel.text = room.name
+        cell.addressLabel.text = room.address
+        cell.rateView.rating = room.rating ?? 0
+        cell.rateView.isHidden = room.added
+        cell.addButton.isHidden = room.added || room.isAdding
+        cell.addButton.tag = indexPath.row
+        if cell.addButton.allTargets.isEmpty {
+            cell.addButton.addTarget(self, action: #selector(add(sender:)), for: .touchUpInside)
+        }
+        if room.isAdding, !cell.spinner.isAnimating {
+            cell.spinner.startAnimating()
+        } else {
+            cell.spinner.stopAnimating()
+        }
+        cell.accessoryType = room.added ? .checkmark : .none
         return cell
     }
     
+    // MARK: - UITableViewDataDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let room = results[indexPath.row]
-        if let roomName = room.name {
-            API.shared.checkIfRoomExistsInUserRoomsList(roomName: roomName, completion: { roomExists in
-                if !roomExists {
-                    API.shared.addRoomToUserRoomsList(room)
-                }
-            })
-        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return results.isEmpty ? 44.0 : 0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let button = UIButton(type: .custom)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
+        let colorScale: CGFloat = 255.0
+        let systemBlueColor = UIColor(red: 9.0/colorScale, green: 80.0/colorScale, blue: 208.0/colorScale, alpha: 1.0)
+        button.setTitleColor(systemBlueColor, for: .normal)
+        button.setTitle("Not on the list? Add a new one", for: .normal)
+        button.addTarget(self, action: #selector(addNewRoom), for: .touchUpInside)
+        button.isUserInteractionEnabled = true
+        button.isEnabled = true
+        return button
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -109,4 +135,44 @@ class SearchRoomViewController: BaseViewController, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
+    
+    // MARK: - Actions
+    
+    @objc func add(sender: UIButton) {
+        let room = results[sender.tag]
+        room.isAdding = true
+        self.resultsTableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .automatic)
+        
+        if let roomName = room.name {
+            API.shared.checkIfRoomExistsInUserRoomsList(roomName: roomName, completion: { roomExists in
+                if !roomExists {
+                    API.shared.addRoomToUserRoomsList(room, success: { [weak self] in
+                        if let `self` = self {
+                            room.added = true
+                            room.isAdding = false
+                            self.userRooms.append(room)
+                            self.resultsTableView.reloadData()
+                        }
+                    }, failure: { [weak self] in
+                        if let `self` = self {
+                            room.isAdding = false
+                            self.resultsTableView.reloadData()
+                        }
+                    })
+                }
+            })
+        }
+    }
+    
+    @objc func addNewRoom(sender: UIButton) {
+        performSegue(withIdentifier: "SegueToAddNewRoom", sender: nil)
+    }
+}
+
+class SearchResultCell: UITableViewCell {
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var rateView: CosmosView!
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
 }
